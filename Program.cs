@@ -5,15 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DB (SQL Server)
+// DB (MySQL)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string not found");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+);
 
 // MVC
 builder.Services.AddControllersWithViews();
+
+// Service
 builder.Services.AddScoped<IKeyGenerator, KeyGenerator>();
 
 // 🔐 Cookie Auth
@@ -35,7 +38,7 @@ using (var scope = app.Services.CreateScope())
 app.UseStaticFiles();
 app.UseRouting();
 
-// 🔐 phải có 2 dòng này
+// 🔐 Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
