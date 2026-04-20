@@ -1,0 +1,53 @@
+@model CreateKeysViewModel
+@{
+    ViewData["Title"] = "Tạo key";
+}
+
+<section class="panel form-panel">
+    <div class="panel-head">
+        <h2>Tạo key hàng loạt</h2>
+        <a class="btn btn-secondary" asp-action="Index">← Quay lại</a>
+    </div>
+
+    <form method="post" class="form-grid">
+        @Html.AntiForgeryToken()
+        <div>
+            <label asp-for="Quantity"></label>
+            <input asp-for="Quantity" />
+            <span asp-validation-for="Quantity" class="validation"></span>
+        </div>
+        <div>
+            <label asp-for="Prefix"></label>
+            <input asp-for="Prefix" />
+        </div>
+        <div>
+            <label asp-for="GroupCount"></label>
+            <input asp-for="GroupCount" />
+            <span asp-validation-for="GroupCount" class="validation"></span>
+        </div>
+        <div>
+            <label asp-for="CharactersPerGroup"></label>
+            <input asp-for="CharactersPerGroup" />
+            <span asp-validation-for="CharactersPerGroup" class="validation"></span>
+        </div>
+        <div>
+            <label asp-for="ProductCode"></label>
+            <input asp-for="ProductCode" placeholder="ví dụ: TIKTOK-PK-GAME" />
+        </div>
+        <div>
+            <label asp-for="ExpireAt"></label>
+            <input asp-for="ExpireAt" />
+        </div>
+        <div class="span-2">
+            <label asp-for="Note"></label>
+            <textarea asp-for="Note" rows="4"></textarea>
+        </div>
+        <div class="span-2 actions-bottom">
+            <button class="btn btn-primary" type="submit">Tạo key</button>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

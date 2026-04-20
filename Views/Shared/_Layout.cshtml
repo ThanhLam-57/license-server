@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LicenseKeyServer</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="container nav-wrap">
+            <div>
+                <a class="brand" asp-controller="Keys" asp-action="Index">ALD License Manager</a>
+                <div class="subtitle">Quản lý key cho game Unity</div>
+            </div>
+
+            <nav class="nav-links">
+                <a asp-controller="Keys" asp-action="Index">Danh sách key</a>
+                <a asp-controller="Keys" asp-action="Create">Tạo key</a>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <span>@User.Identity.Name</span>
+                    <a href="/Account/Logout">Logout</a>
+                }
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-body">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert success">@TempData["Success"]</div>
+        }
+
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

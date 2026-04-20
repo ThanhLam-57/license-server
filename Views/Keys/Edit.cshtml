@@ -1,0 +1,48 @@
+@model LicenseKey
+@{
+    ViewData["Title"] = "Sửa key";
+}
+
+<section class="panel form-panel">
+    <div class="panel-head">
+        <h2>Sửa key #@Model.Id</h2>
+        <a class="btn btn-secondary" asp-action="Index">← Quay lại</a>
+    </div>
+
+    <form method="post" class="form-grid">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div class="span-2">
+            <label asp-for="KeyValue"></label>
+            <input asp-for="KeyValue" />
+        </div>
+        <div>
+            <label asp-for="ProductCode"></label>
+            <input asp-for="ProductCode" />
+        </div>
+        <div>
+            <label asp-for="Status"></label>
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<LicenseStatus>()"></select>
+        </div>
+        <div>
+            <label asp-for="ExpireAt"></label>
+            <input asp-for="ExpireAt" />
+        </div>
+        <div>
+            <label asp-for="DeviceId"></label>
+            <input asp-for="DeviceId" disabled />
+        </div>
+        <div>
+            <label asp-for="ActivationCount"></label>
+            <input asp-for="ActivationCount" disabled />
+        </div>
+        <div class="span-2">
+            <label asp-for="Note"></label>
+            <textarea asp-for="Note" rows="4"></textarea>
+        </div>
+        <div class="span-2 actions-bottom">
+            <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+        </div>
+    </form>
+</section>
