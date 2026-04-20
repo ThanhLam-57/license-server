@@ -5,21 +5,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DB (MySQL)
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+// 🔥 FIX: lấy từ ENV Railway trước
+var connectionString =
+    Environment.GetEnvironmentVariable("DefaultConnection")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string not found");
 
+// MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // MVC
 builder.Services.AddControllersWithViews();
-
-// Service
 builder.Services.AddScoped<IKeyGenerator, KeyGenerator>();
 
-// 🔐 Cookie Auth
+// Auth
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-// Tạo DB/bảng nếu chưa có
+// Tạo DB nếu chưa có
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -38,11 +38,9 @@ using (var scope = app.Services.CreateScope())
 app.UseStaticFiles();
 app.UseRouting();
 
-// 🔐 Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Keys}/{action=Index}/{id?}");
